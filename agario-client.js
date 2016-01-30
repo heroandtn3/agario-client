@@ -2,6 +2,7 @@ var WebSocket    = require('ws');
 var Packet       = require('./packet.js');
 var servers      = require('./servers.js');
 var EventEmitter = require('events').EventEmitter;
+WebSocket.OPEN = 1;
 
 function Client(client_name) {
     //you can change this values
