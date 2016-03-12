@@ -1,3 +1,5 @@
+'use strict';
+
 //auth_token request example
 
 var AgarioClient = require('../agario-client.js'); //Use next line in your scripts
@@ -15,7 +17,7 @@ account.requestFBToken(function(token, info) {
     if(token) {
         console.log('Got new token: ' + token);
         console.log('Now you can set it in client.auth_token and connect');
-        console.log('Token will expire in ' + ( account.token_expire-(+new Date) ) + 'ms');
+        console.log('Token will expire in ' + ( account.token_expire-Date.now() ) + 'ms');
     }else{
         console.log('Failed to get token!');
         if(info.error) console.log('Request error: ' + info.error);

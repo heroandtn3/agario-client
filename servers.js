@@ -1,3 +1,5 @@
+'use strict';
+
 var http = require('http');
 var dns = require('dns');
 
@@ -144,8 +146,8 @@ var servers = {
 
     getPartyServer: function(opt, cb) {
         if(!opt.party_key) throw new Error('getPartyServer wants opt.party_key');
-        var party_key = (opt.party_key.indexOf('#') >= 0) 
-            ? opt.party_key.substr(opt.party_key.indexOf('#')+1) 
+        var party_key = (opt.party_key.indexOf('#') >= 0) ?
+            opt.party_key.substr(opt.party_key.indexOf('#')+1)
             : opt.party_key;
         var post_opt = {
             url: '/getToken',
@@ -164,4 +166,3 @@ var servers = {
 };
 
 module.exports = servers;
-

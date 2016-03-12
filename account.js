@@ -1,3 +1,5 @@
+'use strict';
+
 var https = require('https');
 var EventEmitter = require('events').EventEmitter;
 var WebSocket    = require('ws');
@@ -87,7 +89,7 @@ Account.prototype.requestFBToken = function(cb) {
                 });
                 res.headers.location.replace(/expires_in=([0-9]*)/, function(_, expire) {
                     if(expire) {
-                        account.token_expire = (+new Date) + expire*1000;
+                        account.token_expire = Date.now() + expire*1000;
                     }
                 });
             }
