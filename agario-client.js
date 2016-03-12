@@ -155,8 +155,8 @@ Client.prototype = {
     this.emitEvent('message', packet);
 
     try {
-      processor(this, packet);
-    }catch (err) {
+      processor.bind(this)(this, packet);
+    } catch (err) {
       this.onPacketError(packet, err);
     }
   },
