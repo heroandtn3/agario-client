@@ -1,3 +1,5 @@
+'use strict';
+
 //This is example of connection to agar.io's server through SOCKS4/SOCKS5 server
 
 if(process.argv.length < 5) {
@@ -78,7 +80,7 @@ AgarioClient.servers.getFFAServer(get_server_opt, function(srv) {
 
     client.once('leaderBoardUpdate', function(old, leaders) {
         var name_array = leaders.map(function(ball_id) {
-            return client.balls[ball_id].name || 'unnamed'
+            return client.balls[ball_id].name || 'unnamed';
         });
 
         client.log('Leaders on server: ' + name_array.join(', '));

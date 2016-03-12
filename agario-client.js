@@ -1,3 +1,5 @@
+'use strict';
+
 var WebSocket    = require('ws');
 var Packet       = require('./packet.js');
 var servers      = require('./servers.js');
@@ -97,10 +99,12 @@ Client.prototype = {
         buf.writeUInt32LE(2200049715, 1);
         this.send(buf);
 
+        var i;
+
         if(this.key) {
             buf = new Buffer(1 + this.key.length);
             buf.writeUInt8(80, 0);
-            for (var i=1;i<=this.key.length;++i) {
+            for (i=1;i<=this.key.length;++i) {
                 buf.writeUInt8(this.key.charCodeAt(i-1), i);
             }
             this.send(buf);
@@ -200,7 +204,7 @@ Client.prototype = {
     },
 
     detsroyInactive: function() {
-        var time = (+new Date);
+        var time = Date.now();
 
         if(this.debug >= 3)
             this.log('destroying inactive balls');
@@ -222,6 +226,8 @@ Client.prototype = {
         //tick
         '16': function(client, packet) {
             var eaters_count = packet.readUInt16LE();
+            var ball_id;
+            var ball;
 
             client.tick_counter++;
 
@@ -244,7 +250,6 @@ Client.prototype = {
             //reading actions of balls
             while(1) {
                 var is_virus = false;
-                var ball_id;
                 var coordinate_x;
                 var coordinate_y;
                 var size;
@@ -252,7 +257,7 @@ Client.prototype = {
                 var nick = null;
 
                 ball_id = packet.readUInt32LE();
-                if(ball_id == 0) break;
+                if(ball_id === 0) break;
                 coordinate_x = packet.readSInt32LE();
                 coordinate_y = packet.readSInt32LE();
                 size = packet.readSInt16LE();
@@ -272,11 +277,12 @@ Client.prototype = {
                 if (opt & 2) {
                     packet.offset += packet.readUInt32LE();
                 }
+                var char;
                 if (opt & 4) {
                     var something_2 = ''; //todo something related to premium skins
                     while(1) {
-                        var char = packet.readUInt8();
-                        if(char == 0) break;
+                        char = packet.readUInt8();
+                        if(char === 0) break;
                         if(!something_2) something_2 = '';
                         something_2 += String.fromCharCode(char);
                     }
@@ -284,12 +290,12 @@ Client.prototype = {
 
                 while(1) {
                     char = packet.readUInt16LE();
-                    if(char == 0) break;
+                    if(char === 0) break;
                     if(!nick) nick = '';
                     nick += String.fromCharCode(char);
                 }
 
-                var ball = client.balls[ball_id] || new Ball(client, ball_id);
+                ball = client.balls[ball_id] || new Ball(client, ball_id);
                 ball.color = color;
                 ball.virus = is_virus;
                 ball.setCords(coordinate_x, coordinate_y);
@@ -387,7 +393,7 @@ Client.prototype = {
                 var name = '';
                 while(1) {
                     var char = packet.readUInt16LE();
-                    if(char == 0) break;
+                    if(char === 0) break;
                     name += String.fromCharCode(char);
                 }
 
@@ -592,7 +598,7 @@ Client.prototype = {
 
         var buf = new Buffer([18]);
         this.send(buf);
-        var buf = new Buffer([19]);
+        buf = new Buffer([19]);
         this.send(buf);
 
         return true;
@@ -643,9 +649,11 @@ Client.prototype = {
     },
 
     //deprecated
+    /* jshint ignore:start */
     set facebook_key(_) {
         console.trace('Property "facebook_key" is deprecated. Please check in README.md how new authorization works');
     }
+    /* jshint ignore:end */
 };
 
 function Ball(client, id) {
@@ -663,7 +671,7 @@ function Ball(client, id) {
     this.client      = client;
     this.destroyed   = false;
     this.visible     = false;
-    this.last_update = (+new Date);
+    this.last_update = Date.now();
     this.update_tick = 0;
 
     client.balls[id] = this;
@@ -719,7 +727,7 @@ Ball.prototype = {
 
     update: function() {
         var old_time     = this.last_update;
-        this.last_update = (+new Date);
+        this.last_update = Date.now();
 
         this.emitEvent('update', old_time, this.last_update);
         this.client.emitEvent('ballUpdate', this.id, old_time, this.last_update);

@@ -1,3 +1,5 @@
+'use strict';
+
 //this file is for internal use with packets
 
 function Packet(e) {
@@ -186,4 +188,3 @@ Packet.prototype = {
 };
 
 module.exports = Packet;
-

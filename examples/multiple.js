@@ -1,3 +1,5 @@
+'use strict';
+
 //Example of multiple connections in one script
 //This code is badly documented, please read basic.js in this folder if you don't understand this code
 
@@ -39,7 +41,7 @@ ExampleBot.prototype = {
             bot.log('Connected, spawning');
             bot.client.spawn(bot.nickname);
             //we will search for target to eat every 100ms
-            bot.interval_id = setInterval(function(){bot.recalculateTarget()}, 100);
+            bot.interval_id = setInterval(function(){bot.recalculateTarget();}, 100);
         });
 
         bot.client.on('connectionError', function(e) {
@@ -53,7 +55,7 @@ ExampleBot.prototype = {
 
         bot.client.once('leaderBoardUpdate', function(old, leaders) {
             var name_array = leaders.map(function(ball_id) {
-                return bot.client.balls[ball_id].name || 'unnamed'
+                return bot.client.balls[ball_id].name || 'unnamed';
             });
 
             bot.log('Leaders on server: ' + name_array.join(', '));

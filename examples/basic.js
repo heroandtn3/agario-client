@@ -1,3 +1,5 @@
+'use strict';
+
 //this is example of API usage
 var http = require('http');
 var AgarioClient = require('../agario-client.js'); //Use next line in your scripts
@@ -21,7 +23,7 @@ AgarioClient.prototype.addFriend = function(ball_id) { //adding client.addFriend
 };
 
 AgarioClient.Ball.prototype.isMyFriend = function() { //adding ball.isMyFriend() funtion
-    return this.is_friend == true; //if ball is_friend is true, then true will be returned
+    return !!this.is_friend; //if ball is_friend is true, then true will be returned
 };
 
 client.on('ballAppear', function(ball_id) { //when we somebody
@@ -45,7 +47,7 @@ client.on('friendAdded', function(friend_id) { //on friendEaten event
 
 client.once('leaderBoardUpdate', function(old, leaders) { //when we receive leaders list. Fire only once
     var name_array = leaders.map(function(ball_id) { //converting leader's IDs to leader's names
-        return client.balls[ball_id].name || 'unnamed'
+        return client.balls[ball_id].name || 'unnamed';
     });
 
     client.log('leaders on server: ' + name_array.join(', '));
@@ -133,4 +135,3 @@ AgarioClient.servers.getFFAServer({region: region}, function(srv) { //requesting
     console.log('Connecting to ' + srv.server + ' with key ' + srv.key);
     client.connect('ws://' + srv.server, srv.key); //do not forget to add ws://
 });
-
