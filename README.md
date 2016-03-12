@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/SNSA/agario-client.png?label=ready&title=Ready)](https://waffle.io/SNSA/agario-client)
 # agario-client #
 Node.js client for [agar.io](http://agar.io) with API.
 
