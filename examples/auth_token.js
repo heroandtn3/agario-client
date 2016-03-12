@@ -13,16 +13,16 @@ account.datr   = 'q0F5VlxxxxxxxxxxXEJDC';
 account.xs     = '200:OPXxxxxxxxMw:2:1450787324:-1';
 
 //Request token
-account.requestFBToken(function(token, info) {
-    if(token) {
-        console.log('Got new token: ' + token);
-        console.log('Now you can set it in client.auth_token and connect');
-        console.log('Token will expire in ' + ( account.token_expire-Date.now() ) + 'ms');
-    }else{
-        console.log('Failed to get token!');
-        if(info.error) console.log('Request error: ' + info.error);
-        if(info.res && info.res.statusCode) console.log('HTTP code: ' + info.res.statusCode);
-        if(info.res && info.res.headers && info.res.headers.location) console.log('Redirect: ' + info.res.headers.location);
-        if(info.data) console.log('HTML: ' + info.data);
-    }
+account.requestFBToken(function (token, info) {
+  if (token) {
+    console.log('Got new token: ' + token);
+    console.log('Now you can set it in client.auth_token and connect');
+    console.log('Token will expire in ' + (account.token_expire - Date.now()) + 'ms');
+  }else {
+    console.log('Failed to get token!');
+    if (info.error) console.log('Request error: ' + info.error);
+    if (info.res && info.res.statusCode) console.log('HTTP code: ' + info.res.statusCode);
+    if (info.res && info.res.headers && info.res.headers.location) console.log('Redirect: ' + info.res.headers.location);
+    if (info.data) console.log('HTML: ' + info.data);
+  }
 });

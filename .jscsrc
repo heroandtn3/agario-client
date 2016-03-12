@@ -1,0 +1,11 @@
+{
+  "preset": "airbnb",
+  "verbose": true,
+  "esnext": false,
+  "requirePaddingNewLinesAfterBlocks": false,
+  "disallowMultipleVarDecl": false,
+  "requireCamelCaseOrUpperCaseIdentifiers": false,
+  "maximumLineLength": false,
+  "validateLineBreaks": false,
+  "safeContextKeyword": false
+}
