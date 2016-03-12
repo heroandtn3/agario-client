@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var jshint = require('gulp-jshint');
+var jscs = require('gulp-jscs');
 
 var allJsFiles = [
   './*.js',
@@ -15,4 +16,10 @@ gulp.task('jshint', function() {
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(jshint.reporter('fail'));
+});
+
+gulp.task('jscs', function () {
+  return gulp.src(allJsFiles)
+    .pipe(jscs())
+    .pipe(jscs.reporter());
 });
