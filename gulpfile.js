@@ -7,10 +7,10 @@ var runSeq = require('run-sequence');
 
 var allJsFiles = [
   './*.js',
-  './examples/*.js'
+  './examples/*.js',
 ];
 
-gulp.task('jshint', function() {
+gulp.task('jshint', function () {
   return gulp.src(allJsFiles)
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
@@ -27,6 +27,6 @@ gulp.task('lint', function () {
   runSeq('jshint', 'jscs');
 });
 
-gulp.task('default', function() {
+gulp.task('default', function () {
   runSeq('lint');
 });
