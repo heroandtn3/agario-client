@@ -1,4 +1,6 @@
 [![Stories in Ready](https://badge.waffle.io/SNSA/agario-client.png?label=ready&title=Ready)](https://waffle.io/SNSA/agario-client)
+[![Build Status](https://travis-ci.org/SNSA/agario-client.svg?branch=master)](https://travis-ci.org/SNSA/agario-client)
+
 # agario-client #
 Node.js client for [agar.io](http://agar.io) with API.
 
@@ -199,13 +201,13 @@ If you want record/repeat or watch in real time what your client doing through w
 - `{'reason': 'server-forced'}` when server commands to delete all balls
 
 ## Auth token ##
-To login into your account you need to request token. You can check example in `examples/auth_token.js` 
+To login into your account you need to request token. You can check example in `examples/auth_token.js`
 First create new `AgarioClient.Account`
 ```javascript
 var account = new AgarioClient.Account();
 ```
-Then you need to login through facebook on http://agar.io then go to http://www.facebook.com/ and get cookies c_user,datr,xs. 
-Here is list of properties of `account`: 
+Then you need to login through facebook on http://agar.io then go to http://www.facebook.com/ and get cookies c_user,datr,xs.
+Here is list of properties of `account`:
 - **account.c_user** - set to cookie "c_user" from http://www.facebook.com/
 - **account.datr** - set to cookie "datr" from http://www.facebook.com/
 - **account.xs** - set to cookie "xs" from http://www.facebook.com/
@@ -214,14 +216,14 @@ Here is list of properties of `account`:
 - **account.token_provider** - will contain **1** for facebook, **2** for google. But currently there is no token requesters for google. `requestFBToken()` will set it to **1**
 - **account.token_expire** - contains timestamp in milliseconds when token will expire. Tokens are valid for 1-2 hours. If `(+new Date)>account.token_expire` then you need to request new token and use it in new connection to agar.
 
-Then you call 
+Then you call
 ```javascript
 account.requestFBToken(function(token, info) {
-	//If you have `token` then you can set it to `client.auth_token` 
+	//If you have `token` then you can set it to `client.auth_token`
     // and `client.connect()` to agar server
 });
 ```
-If `token` is null, then something went wrong. Check `info` which can contain: 
+If `token` is null, then something went wrong. Check `info` which can contain:
 - **info.error** - `Error` of connection error
 - **info.res** - response's [http.IncomingMessage](https://nodejs.org/api/http.html#http_http_incomingmessage) object
 - **info.data** - content of page
