@@ -1,13 +1,15 @@
+'use strict';
+
 //This is example of connection to agar.io's server through SOCKS4/SOCKS5 server
 
-if(process.argv.length < 5) {
-    console.log('Please launch this script like');
-    console.log(' node ./examples/socks.js SOCKS_VERSION SOCKS_IP SOCKS_PORT');
-    console.log('SOCKS_IP - IP of SOCKS server');
-    console.log('SOCKS_PORT - port of SOCKS server');
-    console.log('SOCKS_VERSION - SOCKS server version. 4/4a/5. You can use "4" for "4a"');
-    console.log('*This script uses `socks` lib and this is params used by lib');
-    process.exit(0);
+if (process.argv.length < 5) {
+  console.log('Please launch this script like');
+  console.log(' node ./examples/socks.js SOCKS_VERSION SOCKS_IP SOCKS_PORT');
+  console.log('SOCKS_IP - IP of SOCKS server');
+  console.log('SOCKS_PORT - port of SOCKS server');
+  console.log('SOCKS_VERSION - SOCKS server version. 4/4a/5. You can use "4" for "4a"');
+  console.log('*This script uses `socks` lib and this is params used by lib');
+  process.exit(0);
 }
 console.log('Example will use SOCKS server ' + process.argv[3] + ':' + process.argv[4] + ' version ' + process.argv[2]);
 
@@ -17,13 +19,13 @@ console.log('Example will use SOCKS server ' + process.argv[3] + ':' + process.a
 //var Socks = require('socks'); //DO THIS, not what i do
 var Socks;
 try {
-    Socks = require('socks');
-}catch(e){
-    console.log('Failed to load `socks` lib. Install it in examples path using:');
-    console.log('  mkdir ./node_modules/examples/node_modules');
-    console.log('  npm install socks --prefix ./node_modules/agario-client/examples');
-    console.log('  node ./node_modules/agario-client/examples/socks.js');
-    process.exit(0);
+  Socks = require('socks');
+}catch (e) {
+  console.log('Failed to load `socks` lib. Install it in examples path using:');
+  console.log('  mkdir ./node_modules/examples/node_modules');
+  console.log('  npm install socks --prefix ./node_modules/agario-client/examples');
+  console.log('  node ./node_modules/agario-client/examples/socks.js');
+  process.exit(0);
 }
 
 //And we need agario-client
@@ -32,12 +34,12 @@ var AgarioClient = require('../agario-client.js'); //Use next line in your code
 
 //We will need to create new agent for every new connection so we will make function
 function createAgent() {
-    return new Socks.Agent({
+  return new Socks.Agent({
             proxy: {
-                ipaddress: process.argv[3],
-                port: parseInt(process.argv[4]),
-                type: parseInt(process.argv[2])
-            }}
+              ipaddress: process.argv[3],
+              port: parseInt(process.argv[4]),
+              type: parseInt(process.argv[2]),
+            }, }
     );
 }
 
@@ -50,42 +52,42 @@ var agent = createAgent();
 
 //Options for getFFAServer
 var get_server_opt = {
-    region: 'EU-London', //server region
-    agent:  agent        //our agent
+  region: 'EU-London', //server region
+  agent:  agent,        //our agent
 };
 
 //SOCKS version 4 do not accept domain names, we will need to resolve it
 //SOCKS version 4a and 5 can accept domain names as targets
-if(process.argv[2] == '4') {
-    get_server_opt.resolve = true;
+if (process.argv[2] == '4') {
+  get_server_opt.resolve = true;
 }
 
 //Requesting server's IP and key
-AgarioClient.servers.getFFAServer(get_server_opt, function(srv) {
-    if(!srv.server) {
-        console.log('Failed to request server (error=' + srv.error + ', error_source=' + srv.error_source + ')');
-        process.exit(0);
-    }
-    console.log('Got agar.io server ' + srv.server + ' with key ' + srv.key);
+AgarioClient.servers.getFFAServer(get_server_opt, function (srv) {
+  if (!srv.server) {
+    console.log('Failed to request server (error=' + srv.error + ', error_source=' + srv.error_source + ')');
+    process.exit(0);
+  }
+  console.log('Got agar.io server ' + srv.server + ' with key ' + srv.key);
 
-    //Here we already have server and key requested through SOCKS server
-    //Now we will create agario-client
-    var client = new AgarioClient('worker');
-    client.debug = 2;
+  //Here we already have server and key requested through SOCKS server
+  //Now we will create agario-client
+  var client = new AgarioClient('worker');
+  client.debug = 2;
 
-    //Create new agent for client
-    client.agent = createAgent();
+  //Create new agent for client
+  client.agent = createAgent();
 
-    client.once('leaderBoardUpdate', function(old, leaders) {
-        var name_array = leaders.map(function(ball_id) {
-            return client.balls[ball_id].name || 'unnamed'
-        });
-
-        client.log('Leaders on server: ' + name_array.join(', '));
-        console.log('[SUCCESS!] Example succesfully connected to server through SOCKS server and received data. Example is over.');
-        client.disconnect();
+  client.once('leaderBoardUpdate', function (old, leaders) {
+    var name_array = leaders.map(function (ball_id) {
+      return client.balls[ball_id].name || 'unnamed';
     });
 
-    //Connecting to server
-    client.connect('ws://' + srv.server, srv.key);
+    client.log('Leaders on server: ' + name_array.join(', '));
+    console.log('[SUCCESS!] Example succesfully connected to server through SOCKS server and received data. Example is over.');
+    client.disconnect();
+  });
+
+  //Connecting to server
+  client.connect('ws://' + srv.server, srv.key);
 });

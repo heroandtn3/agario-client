@@ -1,0 +1,9 @@
+{
+  "globalstrict": true,
+  "browser": false,
+  "node": true,
+  "expr": true,
+  "esnext": true,
+  "globals": {
+  }
+}
